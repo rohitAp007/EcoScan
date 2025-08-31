@@ -4,12 +4,15 @@ import { Separator } from "@/components/ui/separator";
 
 interface EcoSummaryProps {
   summary?: GenerateEcoSummaryOutput;
+  ecoScoreGrade?: string;
 }
 
-export default function EcoSummary({ summary }: EcoSummaryProps) {
+export default function EcoSummary({ summary, ecoScoreGrade }: EcoSummaryProps) {
   if (!summary || (!summary.summary && !summary.recommendations)) {
     return null;
   }
+  
+  const isBadScore = ecoScoreGrade && ['d','e','f'].includes(ecoScoreGrade);
 
   return (
     <div className="mt-4 space-y-4 text-left">
@@ -17,7 +20,7 @@ export default function EcoSummary({ summary }: EcoSummaryProps) {
         <>
          <Separator />
           <div>
-            <h4 className="font-semibold text-destructive">Environmental Impact</h4>
+            <h4 className={`font-semibold ${isBadScore ? 'text-destructive' : 'text-primary'}`}>Environmental Impact</h4>
             <p className="text-sm text-muted-foreground">{summary.summary}</p>
           </div>
         </>

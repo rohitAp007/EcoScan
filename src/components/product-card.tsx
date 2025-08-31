@@ -77,13 +77,13 @@ export default function ProductCard({ product, onClear }: ProductCardProps) {
             <Badge
               className={cn(badgeVariantClasses[variant])}
             >
-              {verdict}
+              {product.ecoScoreGrade?.toUpperCase() || verdict}
             </Badge>
           </CardDescription>
         </div>
       </CardHeader>
       <CardContent className="px-6 pt-0">
-        <EcoSummary summary={product.aiSummary} />
+        <EcoSummary summary={product.aiSummary} ecoScoreGrade={product.ecoScoreGrade} />
       </CardContent>
       <CardFooter className="bg-muted/50 p-6">
         <Button className="w-full" variant="outline" onClick={onClear}>

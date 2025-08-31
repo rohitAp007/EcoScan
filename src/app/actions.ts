@@ -30,23 +30,26 @@ export async function getProductData(barcode: string): Promise<{ product?: Produ
     }
 
     const product = data.product;
-    const ecoScoreGrade = product.ecoscore_grade?.toLowerCase();
+    const productName = product.product_name;
+
+    if (!productName) {
+        return { error: 'Product name not available for this barcode.' };
+    }
 
     let aiSummary;
-    if (product.product_name && ecoScoreGrade && ['d', 'e', 'f'].includes(ecoScoreGrade)) {
-      try {
+    try {
         aiSummary = await generateEcoSummary({
-          productName: product.product_name,
-          ecoScore: ecoScoreGrade.toUpperCase(),
+          productName: productName,
         });
       } catch (aiError) {
         console.error("AI summary generation failed:", aiError);
-        // Do not block product info if AI fails
+        // Do not block product info if AI fails, but there won't be much to show.
       }
-    }
+      
+    const ecoScoreGrade = aiSummary?.ecoScore?.toLowerCase() || product.ecoscore_grade?.toLowerCase();
 
     const result: ProductData = {
-      name: product.product_name || 'Name not available',
+      name: productName || 'Name not available',
       imageUrl: product.image_url,
       ecoScoreGrade: ecoScoreGrade || 'unknown',
       aiSummary: aiSummary,
