@@ -2,12 +2,6 @@
 
 EcoScan is a Next.js application that allows you to scan product barcodes and get an AI-powered analysis of their environmental impact. Yes, this is an AI model-driven app! It uses generative AI to provide detailed insights into how eco-friendly your food products are.
 
-## Screenshots
-
-<div style="display: flex; gap: 16px; justify-content: center;">
-    <img src="https://placehold.co/400x600?text=EcoScan+Home" alt="EcoScan Home Screen" width="300" />
-    <img src="https://placehold.co/400x600?text=Eco+Score+Analysis" alt="Product Analysis Screen" width="300" />
-</div>
 
 ## Features
 
