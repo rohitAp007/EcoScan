@@ -20,7 +20,7 @@ const GenerateEcoSummaryOutputSchema = z.object({
   productName: z.string().optional().describe('The name of the product. If not found, this can be empty.'),
   imageUrl: z.string().optional().describe('A public URL for an image of the product. Can be a placeholder if no image is found.'),
   ecoScore: z.string().describe("An estimated Eco-Score for the product (A, B, C, D, E, or F). Base your estimation on the product type, packaging, and other relevant factors. For example, a product in a plastic bottle might get a D, while a glass bottle might get a C."),
-  summary: z.string().optional().describe('A summary of the product\'s environmental impact. If the impact is high (D, E, F), explain why. If it is low (A, B), also explain why.'),
+  summary: z.string().optional().describe('A summary of the product\'s environmental impact. If the impact is high (D, E, F), explain why in detail. If it is low (A, B), also explain why.'),
   recommendations: z.string().optional().describe('Alternative eco-friendly product recommendations. Only provide recommendations if better alternatives are readily available.'),
 });
 export type GenerateEcoSummaryOutput = z.infer<typeof GenerateEcoSummaryOutputSchema>;
@@ -33,15 +33,17 @@ const generateEcoSummaryPrompt = ai.definePrompt({
   name: 'generateEcoSummaryPrompt',
   input: {schema: GenerateEcoSummaryForBarcodeInputSchema},
   output: {schema: GenerateEcoSummaryOutputSchema},
-  prompt: `You are an AI assistant designed to provide users with information about the environmental impact of products.
+  prompt: `You are an AI assistant specializing in the environmental impact of consumer products. Your primary focus is to identify products that are NOT eco-friendly and explain why.
 
   Given the product barcode "{{barcode}}", research the product and generate the following:
   
   1.  **Product Name**: The name of the product. If you cannot find it, leave it blank.
   2.  **Image URL**: A public URL for an image of the product. If you cannot find one, do not provide one.
-  3.  **Eco-Score:** Estimate an Eco-Score (A-F) for the product. Base your estimation on the product type, its typical packaging, and other relevant environmental factors. For example, a product in a plastic bottle might get a D, while a glass bottle might get a C.
-  4.  **Summary:** A concise summary of the product's environmental impact. If the impact is high (D, E, F), explain why. If it is low (A, B), also explain why.
-  5.  **Recommendations:** If there are readily available eco-friendly alternatives to the product, provide a short list of recommendations. Only provide recommendations if better alternatives are readily available.
+  3.  **Eco-Score:** Estimate an Eco-Score (A-F) for the product. Be critical in your assessment. Base your estimation on the product type, its typical packaging (e.g., non-recyclable plastic, single-use containers), manufacturing process, and company reputation if known.
+  4.  **Summary:** A concise summary of the product's environmental impact.
+      - If the product is NOT eco-friendly (Eco-Score D, E, or F), provide a detailed explanation focusing on the negative aspects. Mention factors like plastic waste, carbon footprint, water usage, or harmful chemicals.
+      - If the product IS eco-friendly (Eco-Score A or B), briefly explain why.
+  5.  **Recommendations:** If the product has a poor eco-score, suggest specific, readily available, and more sustainable alternatives.
   `,
 });
 
