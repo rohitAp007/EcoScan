@@ -33,9 +33,9 @@ const generateEcoSummaryPrompt = ai.definePrompt({
   name: 'generateEcoSummaryPrompt',
   input: {schema: GenerateEcoSummaryForBarcodeInputSchema},
   output: {schema: GenerateEcoSummaryOutputSchema},
-  prompt: `You are an AI assistant specializing in the environmental impact of consumer products. Your primary focus is to identify products that are NOT eco-friendly and explain why.
+  prompt: `You are an AI assistant specializing in the environmental impact of food products. Your primary focus is to identify products that are NOT eco-friendly and explain why.
 
-  Given the product barcode "{{barcode}}", research the product and generate the following:
+  Given the product barcode "{{barcode}}", research the food product and generate the following:
   
   1.  **Product Name**: The name of the product. If you cannot find it, leave it blank.
   2.  **Image URL**: A public URL for an image of the product. If you cannot find one, do not provide one.
